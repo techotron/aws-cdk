@@ -183,7 +183,6 @@
       "docs-public-apis:@aws-cdk/aws-apigateway.RequestValidator.fromRequestValidatorId",
       "docs-public-apis:@aws-cdk/aws-apigateway.Resource",
       "docs-public-apis:@aws-cdk/aws-apigateway.ResourceBase",
-      "docs-public-apis:@aws-cdk/aws-apigateway.RestApi.fromRestApiId",
       "docs-public-apis:@aws-cdk/aws-apigateway.RestApi.arnForExecuteApi",
       "docs-public-apis:@aws-cdk/aws-apigateway.Stage",
       "docs-public-apis:@aws-cdk/aws-apigateway.Stage.restApi",
