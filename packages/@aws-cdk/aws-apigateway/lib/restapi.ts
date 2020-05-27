@@ -228,6 +228,11 @@ export abstract class MutableRestApi extends Resource implements IRestApi {
    */
   public deploymentStage!: Stage;
 
+  /**
+   * The list of methods bound to this RestApi
+   */
+  public readonly methods = new Array<Method>();
+
   private _latestDeployment?: Deployment;
   private _domainName?: DomainName;
 
@@ -324,6 +329,16 @@ export abstract class MutableRestApi extends Resource implements IRestApi {
       restApi: this,
       ...options,
     });
+  }
+
+  /**
+   * Internal API used by `Method` to keep an inventory of methods at the API
+   * level for validation purposes.
+   *
+   * @internal
+   */
+  public _attachMethod(method: Method) {
+    this.methods.push(method);
   }
 
   protected configureCloudWatchRole(apiResource: CfnRestApi) {
@@ -493,11 +508,6 @@ export class RestApi extends MutableRestApi {
    */
   public readonly restApiRootResourceId: string;
 
-  /**
-   * The list of methods bound to this RestApi
-   */
-  public readonly methods = new Array<Method>();
-
   constructor(scope: Construct, id: string, props: RestApiProps = { }) {
     super(scope, id, props);
 
@@ -565,16 +575,6 @@ export class RestApi extends MutableRestApi {
       ...props,
       restApi: this,
     });
-  }
-
-  /**
-   * Internal API used by `Method` to keep an inventory of methods at the API
-   * level for validation purposes.
-   *
-   * @internal
-   */
-  public _attachMethod(method: Method) {
-    this.methods.push(method);
   }
 
   /**
@@ -692,7 +692,7 @@ class RootResource extends ResourceBase {
    */
   public get restApi(): RestApi {
     if (!this._restApi) {
-      throw new Error('RestApi is not available on Resource not connected to an instance of RestApi. Use `api` property instead');
+      throw new Error('RestApi is not available on Resource not connected to an instance of RestApi. Use `api` instead');
     }
     return this._restApi;
   }

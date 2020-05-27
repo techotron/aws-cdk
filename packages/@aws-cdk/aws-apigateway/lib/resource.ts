@@ -371,10 +371,6 @@ export abstract class ResourceBase extends ResourceConstruct implements IResourc
 
 export class Resource extends ResourceBase {
   public readonly parentResource?: IResource;
-  /**
-   * @deprecated - Throws an error if this Resource is not associated with an instance of `RestApi`. Use `api` instead.
-   */
-  public readonly restApi: RestApi;
   public readonly api: MutableRestApi;
   public readonly resourceId: string;
   public readonly path: string;
@@ -402,7 +398,6 @@ export class Resource extends ResourceBase {
     const resource = new CfnResource(this, 'Resource', resourceProps);
 
     this.resourceId = resource.ref;
-    this.restApi = props.parent.restApi;
     this.api = props.parent.api;
 
     // render resource path (special case for root)
@@ -428,6 +423,14 @@ export class Resource extends ResourceBase {
     if (this.defaultCorsPreflightOptions) {
       this.addCorsPreflight(this.defaultCorsPreflightOptions);
     }
+  }
+
+  /**
+   * The RestApi associated with this Resource
+   * @deprecated - Throws an error if this Resource is not associated with an instance of `RestApi`. Use `api` instead.
+   */
+  public get restApi(): RestApi {
+    return this.parentResource!.restApi;
   }
 }
 
